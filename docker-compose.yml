@@ -21,14 +21,17 @@ services:
   elsysparser:
     build: ./elsysparser
     volumes:
-      - ./elsysparser/elsysparser/server.conf:/var/elsysparser/server.conf
+      - ./elsysparser/elsysparser/server.conf:/var/elsysparser/server.conf:ro
     links:
       - mosquitto
     restart: always
   mosquitto:
     image: eclipse-mosquitto:1.6
     volumes:
-      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./mosquitto/:/mosquitto/config/:ro
+    ports:
+      # panoulu listener has password authentication
+      - "883:2883"
   chronograf:
     image: chronograf:1.5.0
     volumes:
