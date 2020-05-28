@@ -1,3 +1,4 @@
 #!/bin/bash
-docker build -t elsysparser ${BASH_SOURCE%/*}
 
+#  this was a workaround
+docker build -t elsysparser:latest ${BASH_SOURCE%/*}

@@ -1,14 +1,23 @@
 [MqttBroker]
-host: mosquitto
-port: 1883
+host: smartcampus-mqtt.oulu.fi
+port: 883
+
 user: user
-passwd: pwd
+passwd: pass
+
 in_topic: cwc/elsys/downlinkMessage
 out_topic: cwc/elsys/parsed
+
+# comment out, if you don't want monitoring
 monitor_topic: cwc/elsys/parserStatus
+
 # please use unique identifier for client
-# the previous client with the same name will be kicked out
+# as the previous client with the same name
+# may be kicked out
 client_id: elsysparser_aleksi
+
+# uncomment if you want to use tls
+#certificate_path: certificates/ca.crt
 
 [ElsysDeployment]
 appeui: 43-57-43-5f-44-45-4d-4f

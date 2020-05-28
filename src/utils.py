@@ -29,7 +29,7 @@ schema_in_mesg = {
     "payload": "list[int]"
 }
 
-# parsed is returned by parse_elsys_message
+# parsed is returned by parse_elsys_message()
 schema_parsed = {
     "_msqid": "str",
     "deveui": "str",
