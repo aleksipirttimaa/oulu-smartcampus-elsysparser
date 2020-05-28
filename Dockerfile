@@ -4,7 +4,7 @@ WORKDIR /var/elsysparser
 
 COPY src/ /usr/src/elsysparser
 COPY certificates/ /var/elsysparser/certificates
-COPY elsysparser/requirements.txt /var/elsysparser
+COPY requirements.txt /var/elsysparser
 
 # you can mount config with:
 # --volume server.conf:/var/elsysparser/server.conf:ro
