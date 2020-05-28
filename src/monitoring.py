@@ -1,4 +1,5 @@
 import json
+# -*- coding: utf-8 -*-
 
 class MonLog:
     '''
