@@ -5,5 +5,7 @@ topic cwc/elsys/downlinkMessage in 0
 cleansession true
 
 remote_clientid aleksi
-remote_password CwcMqttBroker%6/
-remote_username juha
+remote_password F3iCs9RHPa7m
+remote_username buiegaww
+#remote_password CwcMqttBroker%6/
+#remote_username juha
