@@ -28,7 +28,11 @@ schema_in_mesg = {
     "rssi": "int",
     "seqn": "int",
     "size": "int",
-    "timestamp": "int",
+    "time": "int",
+    "tmst": "int",
+    "fcnt": "int",
+    "gweui": "str",
+    "stat": "int",
     "payload": "list[int]"
 }
 
