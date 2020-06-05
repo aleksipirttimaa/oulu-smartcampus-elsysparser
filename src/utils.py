@@ -92,23 +92,14 @@ def parse_elsys_message(in_mesg_json):
         try:
             parsed["_msgid"] = in_mesq["_msgid"] # _msqid is passed trough for reference
             parsed["deveui"] = in_mesq["deveui"]
-            # upstream generates timestamps in local timezone
-            # TODO add timezone conversion
+            # assume upstream generates timestamps in UTC timezone
             try:
-                timestamp_str = in_mesq["timestamp"]
+                timestr = in_mesq["time"]
             except KeyError:
                 pass
             else:
-                upstream_datetime = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-                parsed["timestamp_node"] = time.mktime(upstream_datetime.timetuple())
-
-            try:
-                tmst_str = in_mesq["tmst"]
-            except KeyError:
-                if not parsed["timestamp_node"]:
-                    raise ElsysParserError("Unexpected node timestamp.")
-            else:
-                parsed["timestamp_node"] = float(tmst_str)
+                node_datetime = datetime.datetime.strptime(timestr, "%Y-%m-%dT%H:%M:%S.%fZ")
+                parsed["timestamp_node"] = node_datetime.replace(tzinfo=datetime.timezone.utc).timestamp()
             
             payload = in_mesq["payload"]
             mesg_size = in_mesq["size"]
@@ -129,7 +120,7 @@ def parse_elsys_message(in_mesg_json):
                 parsed["battery"] = ((payload[14] * 256) + payload[15]) / 1000
             else:
                 raise ElsysParserError("Unexpected message size.")
-            parsed["timestamp_parser"] = round(time.time())
+            parsed["timestamp_parser"] = time.time()
             parsed_json = json.dumps(parsed)
             return parsed_json
         except ValueError as err:
