@@ -94,9 +94,21 @@ def parse_elsys_message(in_mesg_json):
             parsed["deveui"] = in_mesq["deveui"]
             # upstream generates timestamps in local timezone
             # TODO add timezone conversion
-            timestamp_str = in_mesq["timestamp"]
-            upstream_datetime = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-            parsed["timestamp_node"] = time.mktime(upstream_datetime.timetuple())
+            try:
+                timestamp_str = in_mesq["timestamp"]
+            except KeyError:
+                pass
+            else:
+                upstream_datetime = datetime.datetime.strptime(timestamp_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+                parsed["timestamp_node"] = time.mktime(upstream_datetime.timetuple())
+
+            try:
+                tmst_str = in_mesq["tmst"]
+            except KeyError:
+                if not parsed["timestamp_node"]:
+                    raise ElsysParserError("Unexpected node timestamp.")
+            else:
+                parsed["timestamp_node"] = float(tmst_str)
             
             payload = in_mesq["payload"]
             mesg_size = in_mesq["size"]

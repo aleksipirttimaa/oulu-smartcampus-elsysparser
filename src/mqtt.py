@@ -3,8 +3,12 @@
 
 from configparser import NoOptionError
 import os
-import paho.mqtt.client as mqtt
+import sys
 import settings
+import traceback
+
+import paho.mqtt.client as mqtt
+
 
 
 class Mqtt():
@@ -59,6 +63,8 @@ class Mqtt():
                 settings.logger.critical("Error occured while connecting to the broker. Error code: " + str(rc))
         except Exception as err: # paho-mqtt.client loop inhibits all exceptions, I'm trying my best
             settings.logger.critical("Connection handler encountered an unexpected error: " + str(err))
+            settings.logger.debug("paho-mqtt Traceback:")
+            traceback.print_exc(limit=4, file=sys.stdout)
             quit()
 
 
@@ -67,6 +73,8 @@ class Mqtt():
             self.message_handler(mesg.payload) # not to be confused w/ elsys payload
         except Exception as err: # paho-mqtt.client lo...
             settings.logger.critical("Message handler encountered an unexpected error: " + str(err))
+            settings.logger.debug("paho-mqtt Traceback:")
+            traceback.print_exc(limit=4, file=sys.stdout)
             quit()
 
 

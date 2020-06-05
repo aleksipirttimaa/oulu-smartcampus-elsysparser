@@ -53,6 +53,7 @@ def handle_message(message):
         settings.logger.debug("Parsed message successfully.")
         MQTT_CLIENT.publish(parsed)
         MON_LOG.n_success += 1
+        # rate limit monitoring message
         if LAST_MONITORING_MESSAGE + 10 < time.time():
             LAST_MONITORING_MESSAGE = time.time()
             MQTT_CLIENT.publish_monitor(MON_LOG)

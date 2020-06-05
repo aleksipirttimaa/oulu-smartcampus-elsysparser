@@ -1,2 +1,7 @@
 # don't leak your credentials
 server.conf
+
+# default logfile
+main.log
+
+
