@@ -47,7 +47,8 @@ def handle_message(message):
     except ElsysParserError as err: 
         # parser couldn't do its thing, likely malformed payload
         settings.logger.warning(str(err))
-        settings.logger.debug("Failed message: " + message)
+        # message type is bytes
+        settings.logger.debug("Failed message: " + message.decode("utf-8"))
         MON_LOG.n_fail += 1
     else:
         settings.logger.debug("Parsed message successfully.")
