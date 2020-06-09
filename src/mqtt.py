@@ -13,8 +13,6 @@ import settings
 
 
 
-
-
 class Mqtt():
     def __init__(self):
         self.publish_topic = settings.config.get("MqttBroker", "out_topic")
@@ -52,7 +50,6 @@ class Mqtt():
         self.client.on_message = self.on_message
         self.client.on_disconnect = self.on_disconnect
 
-
     def none_callback(self, *_):
         raise NotImplementedError("Uninitialised callback invoked")
 
@@ -70,7 +67,6 @@ class Mqtt():
             traceback.print_exc(limit=4, file=sys.stdout)
             sys.exit()
 
-
     def on_message(self, _client, _userdata, mesg):
         try:
             self.message_handler(mesg.payload) # not to be confused w/ elsys payload
@@ -80,10 +76,8 @@ class Mqtt():
             traceback.print_exc(limit=4, file=sys.stdout)
             sys.exit()
 
-
     def on_disconnect(_self, _client, _userdata, _rc):
         settings.logger.critical("Client disconnected.")
-
 
     def connect(self):
         broker_host = settings.config.get("MqttBroker", "host")
@@ -103,7 +97,6 @@ class Mqtt():
         else:
             print("Connection to the broker failed. Return code: " + str(rc))
             settings.logger.critical("Connection to the broker failed. Return code: " + str(rc))
-
 
     def publish(self, message, topic=""):
         if topic == "": # publish as result if no other topic specified

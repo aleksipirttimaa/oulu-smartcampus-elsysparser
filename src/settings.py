@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-Please read ../server.conf.example
+Please read ../client.conf.example
 
 Contains global variables. 🆘
 
@@ -14,7 +14,7 @@ import os
 import sys
 
 # loading configuration file
-config_file_name = 'server.conf'
+config_file_name = 'client.conf'
 config = configparser.ConfigParser()
 config.read(config_file_name)
 
