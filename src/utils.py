@@ -59,32 +59,7 @@ def parse_elsys_message(in_mesg_json):
 
     Returns a json string that includes only the new values.
 
-    Example in_mesg_json [str]
-        {
-            "ack":false, 
-            "adr":true,
-            "appeui":"43-57-43-5f-44-45-4d-4f",
-            "chan":0,
-            "cls":0,
-            "codr":"4/5",
-            "datr":"SF7BW125",
-            "deveui":"a8-17-58-ff-fe-03-0f-f5",
-            "freq":"868.1",
-            "lsnr":"9.2",
-            "mhdr":"406000000280d009",
-            "modu":"LORA",
-            "opts":"",
-            "port":5,
-            "rfch":0,
-            "rssi":-97,
-            "seqn":2512,
-            "size":24,
-            "timestamp":"2019-06-27T06:36:41.189934Z",
-            "tmst":2835661339,
-            "payload":[1,0,231,2,38,4,1,159,5,3,6,1,167,7,14,98],
-            "eui":"a8-17-58-ff-fe-03-0f-f5",
-            "_msgid":"8ff111b9.700ef"
-        }
+    Please refer to the README for reference of the input and output.
     '''
     try:
         in_mesq = json.loads(in_mesg_json)

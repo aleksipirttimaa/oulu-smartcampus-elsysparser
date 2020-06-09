@@ -25,7 +25,6 @@ def shutdown():
     settings.logger.debug("MQTT client loop stopped.")
     settings.logger.info("Client disconnecting.")
     MQTT_CLIENT.client.disconnect()
-    
 
 
 def terminate_signal_handler(_signal, _frame):

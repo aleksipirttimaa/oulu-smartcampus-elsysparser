@@ -1,36 +1,40 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from configparser import NoOptionError
 import os
 import sys
-import settings
+import socket
 import traceback
 
+from configparser import NoOptionError
 import paho.mqtt.client as mqtt
+
+import settings
+
+
 
 
 
 class Mqtt():
     def __init__(self):
-        self.publish_topic = settings.config.get('MqttBroker', 'out_topic')
-        self.monitor_topic = settings.config.get('MqttBroker', 'monitor_topic') or ""
+        self.publish_topic = settings.config.get("MqttBroker", "out_topic")
+        self.monitor_topic = settings.config.get("MqttBroker", "monitor_topic") or ""
 
         # please use unique identifier for client
         # the previous client with the same name will be kicked out
-        client_id = settings.config.get('MqttBroker', 'client_id')
+        client_id = settings.config.get("MqttBroker", "client_id")
         self.client = mqtt.Client(client_id, clean_session=True)
 
         # credentials also from config
-        broker_user = settings.config.get('MqttBroker', 'user')
-        broker_pass = settings.config.get('MqttBroker', 'passwd')
+        broker_user = settings.config.get("MqttBroker", "user")
+        broker_pass = settings.config.get("MqttBroker", "passwd")
         certificate_path = ""
         try:
-            certificate_path = settings.config.get('MqttBroker', 'certificate_path')
-        except NoOptionError as err:
+            certificate_path = settings.config.get("MqttBroker", "certificate_path")
+        except NoOptionError:
             settings.logger.warning("No tls cert set, tls won't be used.")
 
-        self.parsed_topic = settings.config.get('MqttBroker', 'out_topic')
+        self.parsed_topic = settings.config.get("MqttBroker", "out_topic")
 
         self.client.username_pw_set(broker_user, password=broker_pass)
 
@@ -52,7 +56,6 @@ class Mqtt():
     def none_callback(self, *_):
         raise NotImplementedError("Uninitialised callback invoked")
 
-
     def on_connect(self, client, userdata, _flags, rc):
         try:
             subscribe_topic = settings.config.get('MqttBroker', 'in_topic')
@@ -65,7 +68,7 @@ class Mqtt():
             settings.logger.critical("Connection handler encountered an unexpected error: " + str(err))
             settings.logger.debug("paho-mqtt Traceback:")
             traceback.print_exc(limit=4, file=sys.stdout)
-            quit()
+            sys.exit()
 
 
     def on_message(self, _client, _userdata, mesg):
@@ -75,7 +78,7 @@ class Mqtt():
             settings.logger.critical("Message handler encountered an unexpected error: " + str(err))
             settings.logger.debug("paho-mqtt Traceback:")
             traceback.print_exc(limit=4, file=sys.stdout)
-            quit()
+            sys.exit()
 
 
     def on_disconnect(_self, _client, _userdata, _rc):
@@ -83,11 +86,16 @@ class Mqtt():
 
 
     def connect(self):
-        broker_host = settings.config.get('MqttBroker', 'host')
-        broker_port = settings.config.get('MqttBroker', 'port')
+        broker_host = settings.config.get("MqttBroker", "host")
+        broker_port = settings.config.get("MqttBroker", "port")
 
         settings.logger.info("Connecting to broker.")
-        rc = self.client.connect(broker_host, int(broker_port), keepalive=60)
+
+        try:
+            rc = self.client.connect(broker_host, int(broker_port), keepalive=60)
+        except socket.gaierror as err:
+            settings.logger.critical("Socket error, please check server.conf")
+            raise Exception from err
 
         if rc == 0:
             settings.logger.debug("MQTT client loop started")
@@ -100,7 +108,7 @@ class Mqtt():
     def publish(self, message, topic=""):
         if topic == "": # publish as result if no other topic specified
             topic = self.parsed_topic
-        msg_info = self.client.publish(topic, payload=message) # QoS-0 by default
+        self.client.publish(topic, payload=message) # QoS-0 by default
         
     def publish_monitor(self, status):
         if self.monitor_topic != "":
