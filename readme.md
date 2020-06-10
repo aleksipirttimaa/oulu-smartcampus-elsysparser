@@ -38,15 +38,15 @@ What is the output like?
   "_msgid": "54d03042.ab2fd",
   "deveui": "a8-17-58-ff-fe-03-10-12",
   "timestamp_node": 1590648980,
-  "temperature": 22, // °C
-  "humidity": 29, // rh %
+  "temperature": 22,
+  "humidity": 29,
   "light": 492,
-  "pir": 0, // event count
+  "pir": 0,
   "co2": 484,
-  "battery": 3.672, // V
+  "battery": 3.672,
   "timestamp_parser": 1590649973, 
-  "sound_avg": 35, // dB
-  "sound_peak": 95 // db
+  "sound_avg": 35,
+  "sound_peak": 95
 }
 ```
 
