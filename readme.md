@@ -30,7 +30,7 @@ You can build this as a container with:
 
 # Types
 
-You can find the parser logic in `src/utils.py`.
+You can find the parser logic in `src/gw_message.py` and `src/payload.py`.
 
 What is the output like?
 ```json
