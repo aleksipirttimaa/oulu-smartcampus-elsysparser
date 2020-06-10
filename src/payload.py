@@ -1,36 +1,68 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+elsys-compatible payload parsing
+'''
 from json import dumps
 
 def float_from_dual_bite(bite):
+    '''
+    Helper for a recurring pattern of 16-bit values.
+    '''
     return (bite[0] * 256) + bite[1]
 
 def temperature(bite):
+    '''
+    Unit is Celsius [°C].
+    '''
     return { "temperature": float_from_dual_bite(bite) / 10 }
 
 def humidity(bite):
+    '''
+    Unit is relative humidity [%].
+    '''
     return { "humidity": bite[0] }
 
 def light(bite):
+    '''
+    Unit is ???.
+    '''
     return { "light": float_from_dual_bite(bite) }
 
 def motion(bite):
+    '''
+    Unit depends on sensor config, as of 2020-06
+    all sensors have been configured in a unified way,
+    where the count is incremented by one for every 30
+    second window any motion is detected.
+    As a reporting interval of 15 minutes is used, the
+    range is 0 - 30.
+    '''
     return { "motion": bite[0] }
 
 def co2(bite):
+    '''
+    Unit is ???.
+    '''
     return { "co2": float_from_dual_bite(bite) }
 
 def battery(bite):
+    '''
+    Unit is volts [V].
+    '''
     return { "battery": float_from_dual_bite(bite) / 1000 }
 
 def sound(bite):
+    '''
+    Unit is Decibel [dB].
+    '''
     return { "sound_peak": bite[0], "sound_avg": bite[1] }
 
 def debug(bite):
+    '''
+    Debug frames shouldn't prevent parsing.
+    '''
     return { "debug": "not implemented" }
-
-def sensor_settings(bite):
-    return { "settings": "not implemented" }
 
 # 'STYPE' data type id: handler, length
 STYPES = {
@@ -44,6 +76,7 @@ STYPES = {
     0x3d: (debug, 4)
 }
 
+# Setting frames are variable in length
 STYPE_SETTINGS = 0x3e
 
 STYPE_MASK = 0x3f # 0011 1111
@@ -59,9 +92,16 @@ NOBS = {
 NOB_MASK = 0xc0 # 1100 0000
 
 class PayloadError(Exception):
+    '''
+    Raised typically when the parser needs to stop, as it won't
+    be able to produce a reliable output.
+    '''
     pass
 
 class Payload:
+    '''
+    Payload instance implements parser logic and string representation.
+    '''
     def __init__(self, payload):
         self.data = {}
         self._unparsed = payload
@@ -91,9 +131,9 @@ class Payload:
             elif stype_b == 0x00:
                 raise PayloadError("STYPE is null")
             elif stype_b == STYPE_SETTINGS:
-                raise PayloadError("STYPE settings is not supported")
+                raise PayloadError("STYPE settings is not supported.")
             else:
-                raise PayloadError("unknown STYPE 0x{:02x}".format(stype_b))
+                raise PayloadError("unknown STYPE: 0x{:02x}".format(stype_b))
 
     def load(self):
         self._parse()

@@ -21,4 +21,3 @@ client_id: elsysparser-dev
 
 [ElsysDeployment]
 appeui: 43-57-43-5f-44-45-4d-4f
-ports: [7, 9]

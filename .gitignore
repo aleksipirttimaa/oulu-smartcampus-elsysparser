@@ -1,6 +1,5 @@
 # don't leak your credentials
 client.conf
-server.conf
 
 # default logfile
 main.log

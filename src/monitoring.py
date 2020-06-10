@@ -1,6 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 import json
 from time import time
-# -*- coding: utf-8 -*-
 
 class MonLog:
     '''
@@ -22,11 +24,12 @@ class MonLog:
         self._n_success_prev = self.n_success
         self.n_delta_fail = self.n_fail - self._n_fail_prev
         self._n_fail_prev = self.n_fail
-        return json.dumps({"n_success": self.n_success,
-                           "n_delta_success": self.n_delta_success,
-                           "n_fail": self.n_fail,
-                           "n_delta_fail": self.n_delta_fail
-                        })
+        return json.dumps({
+                                "n_success": self.n_success,
+                                "n_delta_success": self.n_delta_success,
+                                "n_fail": self.n_fail,
+                                "n_delta_fail": self.n_delta_fail
+                            })
 
     def allow(self):
         now = time()

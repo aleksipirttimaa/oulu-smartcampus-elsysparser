@@ -1,5 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+'''
+This module parses the json message from the gateway, and invokes
+payload.py for parsing the sensor paylaod.
+'''
 
 import json
 import time
@@ -44,12 +48,14 @@ schema_parsed = {
     "deveui": "str",
     "timestamp_node": "float",
     "timestamp_parser": "float",
-    "temperature": "float",
-    "humidity": "float",
-    "light": "float",
+    "temperature": "float", # optional
+    "humidity": "float", # optional
+    "light": "float", # optional
     "pir": "float", # optional
     "co2": "float", # optional
-    "battery": "float"
+    "battery": "float", # optional
+    "sound_avg": "float", # optional
+    "sound_peak": "float" # optional
 }
 
 class GatewayMessageError(Exception):
