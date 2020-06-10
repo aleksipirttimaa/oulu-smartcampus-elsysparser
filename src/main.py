@@ -13,7 +13,7 @@ import settings
 
 MQTT_CLIENT = mqtt.Mqtt()
 MON_LOG = MonLog()
-LAST_MONITORING_MESSAGE = 0
+
 
 
 def shutdown():
@@ -38,7 +38,6 @@ def handle_message(message):
     Callback called by Mqtt for every message of the topic.
     '''
     global MON_LOG
-    global LAST_MONITORING_MESSAGE
     try:
         parsed = parse_gateway_message(message)
     except GatewayMessageError as err: 
