@@ -19,7 +19,9 @@ class MonLog:
     def __str__(self):
         # delta = current - previous
         self.n_delta_success = self.n_success - self._n_success_prev
+        self._n_success_prev = self.n_success
         self.n_delta_fail = self.n_fail - self._n_fail_prev
+        self._n_fail_prev = self.n_fail
         return json.dumps({"n_success": self.n_success,
                            "n_delta_success": self.n_delta_success,
                            "n_fail": self.n_fail,

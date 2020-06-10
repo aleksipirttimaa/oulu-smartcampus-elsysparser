@@ -7,7 +7,7 @@ COPY certificates/ /var/elsysparser/certificates
 COPY requirements.txt /var/elsysparser
 
 # you can mount config with:
-# --volume server.conf:/var/elsysparser/server.conf:ro
+# --volume client.conf:/var/elsysparser/client.conf:ro
 
 RUN touch /var/elsysparser/main.log \
  && chmod 666 /var/elsysparser/main.log \
