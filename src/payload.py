@@ -42,7 +42,7 @@ def motion(bite):
 
 def co2(bite):
     '''
-    Unit is ???.
+    Unit is ppm.
     '''
     return { "co2": float_from_dual_bite(bite) }
 
