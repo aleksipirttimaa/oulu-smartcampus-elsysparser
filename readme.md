@@ -9,7 +9,8 @@ Elsysparser is an MQTT client that implements elsys-compatible sensor data parsi
 
 ### `src/`:
 
-- `utils.py`: implements parsing logic
+- `gw_message.py`: implements parsing logic for the gateway related fields
+- `payload.py`: 
 - `monitoring.py`: monitoring object
 - `mqtt.py`: mqtt protocol object
 - `settings.py`: configuration available to other modules
