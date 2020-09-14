@@ -25,7 +25,7 @@ def humidity(bite):
 
 def light(bite):
     '''
-    Unit is ???.
+    Unit is Lux.
     '''
     return { "light": float_from_dual_bite(bite) }
 
@@ -58,6 +58,35 @@ def sound(bite):
     '''
     return { "sound_peak": bite[0], "sound_avg": bite[1] }
 
+def acceleration(bite):
+    '''
+    Unit is G.
+    '''
+    output = []
+    for value in bite:
+        if value > 127:
+            value -= 256
+        output.append(round((value/63), 2))
+    return { "acceleration": { "x": output[0] , "y": output[1], "z": output[2] } }
+
+def pressure(bite):
+    '''
+    Unit converted to bar.
+    '''
+    sum = 0
+    for index, value in enumerate(reversed(bite)):
+        mid_sum = value * (256 ** index)
+        sum += mid_sum
+    return { "pressure": round(sum / (10 ** 6), 4) }
+
+def moisture(bite):
+    '''
+    Unit is %.
+    ***Some sensor give value ~ 4350 for some reason, figuring it out. Maybe
+    EC-5/HS-10 variation or wrong senor in settings causes this?
+    '''
+    return { "moisture": float_from_dual_bite(bite)}
+
 def debug(bite):
     '''
     Debug frames shouldn't prevent parsing.
@@ -68,10 +97,14 @@ def debug(bite):
 STYPES = {
     0x01: (temperature, 2),
     0x02: (humidity, 1),
+    0x03: (acceleration, 3),
     0x04: (light, 2),
     0x05: (motion, 1),
     0x06: (co2, 2),
     0x07: (battery, 2),
+    0x08: (moisture, 2),
+    0x0f: (motion, 1),
+    0x14: (pressure, 4),
     0x15: (sound, 2),
     0x3d: (debug, 4)
 }
