@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import time
 import signal
+import sys
+import time
+import traceback
 
 # user modules
 from gw_message import parse_gateway_message, GatewayMessageError
@@ -46,6 +48,7 @@ def handle_message(message):
         settings.logger.warning(str(err))
         # message type is bytes
         settings.logger.debug("Failed message: " + message.decode("utf-8"))
+        traceback.print_exc(limit=4, file=sys.stdout)
         MON_LOG.n_fail += 1
     else:
         settings.logger.debug("Parsed message successfully.")
