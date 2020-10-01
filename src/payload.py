@@ -70,7 +70,7 @@ def acceleration(bite):
     for value in bite:
         if value > 127:
             value -= 256
-        output.append(round((value/63), 2))
+        output.append(round((value / 63), 2))
     return {"acceleration":
                 {
                     "x": output[0],
@@ -85,9 +85,8 @@ def pressure(bite):
     '''
     count = 0
     for index, value in enumerate(reversed(bite)):
-        mid_sum = value * (256 ** index)
-        count += mid_sum
-    return {"pressure": round(sum / (10 ** 6), 4)}
+        count += value * (256 ** index)
+    return {"pressure": round(count / (10 ** 6), 4)}
 
 def moisture(bite):
     '''
