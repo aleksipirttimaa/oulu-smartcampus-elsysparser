@@ -51,7 +51,7 @@ class Mqtt():
         self.client.on_disconnect = self.on_disconnect
 
     def none_callback(self, *_):
-        raise NotImplementedError("Uninitialised callback invoked")
+        raise NotImplementedError("Uninitialised callback invoked.")
 
     def on_connect(self, client, userdata, _flags, rc):
         try:
@@ -88,7 +88,7 @@ class Mqtt():
         try:
             rc = self.client.connect(broker_host, int(broker_port), keepalive=60)
         except socket.gaierror as err:
-            settings.logger.critical("Socket error, please check server.conf")
+            settings.logger.critical("Socket error, please check client.conf.")
             raise Exception from err
 
         if rc == 0:
