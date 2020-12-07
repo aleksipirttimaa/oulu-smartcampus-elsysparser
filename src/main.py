@@ -7,7 +7,7 @@ import time
 import traceback
 
 # user modules
-from gw_message import parse_gateway_message, GatewayMessageError
+from gw_message import parse_gateway_message, GatewayMessageError, GatewayMessageIgnored
 from monitoring import MonLog
 import mqtt
 import settings
@@ -42,6 +42,8 @@ def handle_message(message):
     global MON_LOG
     try:
         parsed = parse_gateway_message(message)
+    except GatewayMessageIgnored as err:
+        settings.logger.warning(str(err))
     except GatewayMessageError as err: 
         # parser couldn't do its thing, likely malformed payload
         settings.logger.warning(str(err))
